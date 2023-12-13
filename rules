@@ -1,0 +1,109 @@
+1 - É possível escolher uma dentre as seguintes raças:
+    Humano
+    Elfos
+    Anão
+    Orc
+    Vampiros
+2 - Cada personagem contém cada um dos seguintes atributos:
+    HP: Define a vida máxima do char
+    Ataque: Define o potencial dano físico causado a inimigos
+    Magia: Define o potencial dano mágico causado a inimigos
+    Armadura: Define o potencial de absorver dano físico
+    Defesa Mágica: Definie o potencial de absorver magia
+    Velocidade: Define a rapidez e agilidade do personagem
+
+    Cada atributo tem um máximo de 100
+
+3- Cada raça tem uma pré-disposição genética a adquirir mais pontos em um atributo do que outros
+[AVISO]: Os percentuais não correspondem ao que se tem em código [AVISO]
+    
+    Humanos:
+        Vida (HP): 25%
+        Ataque: 25%
+        Magia: 10%
+        Defesa Física: 20%
+        Defesa Mágica: 20%
+        Velocidade: 20%
+        Os humanos são versáteis e adaptáveis, então eles têm uma distribuição equilibrada entre os atributos.
+
+        ATAQUE:
+        Ataque Poderoso: Um golpe forte e direto que concentra a força física do personagem para causar dano físico extra ao oponente. 
+        Este ataque requer um curto tempo de recarga após o uso.
+
+    Elfos:
+        Vida (HP): 15%
+        Ataque: 15%
+        Magia: 25%
+        Defesa Física: 10%
+        Defesa Mágica: 25%
+        Velocidade: 25%
+        Os elfos são ágeis e têm afinidade natural com a magia, então têm uma alta probabilidade em magia e velocidade, mas são um pouco mais frágeis fisicamente.
+        
+        ATAQUE:
+        Flecha Sombria: Dispara uma flecha envolta em energia mágica, causando dano mágico ao alvo. 
+        Esta habilidade tem a vantagem de atingir oponentes à distância.
+
+    Anões:
+        Vida (HP): 35%
+        Ataque: 25%
+        Magia: 10%
+        Defesa Física: 25%
+        Defesa Mágica: 15%
+        Velocidade: 10%
+        Os anões são robustos e resistentes, com grande força física e resistência, mas têm menos afinidade com magia e são menos ágeis.
+
+        ATAQUE:
+        Martelo da Forja: Desfere um golpe poderoso com um martelo, causando um grande dano físico ao inimigo. 
+        Esse ataque tem uma chance maior de acerto crítico.
+
+    Orcs:
+        Vida (HP): 35%
+        Ataque: 30%
+        Magia: 5%
+        Defesa Física: 30%
+        Defesa Mágica: 15%
+        Velocidade: 10%
+        Os orcs são poderosos e robustos, excelentes em combate corpo a corpo, mas têm menos habilidades mágicas e são um pouco mais lentos.
+
+        ATAQUE:
+        Investida Brutal: O personagem investe violentamente contra o inimigo, causando dano físico massivo. 
+        Porém, após o uso dessa habilidade, o personagem fica mais vulnerável por um curto período.
+
+    Vampiros:
+        Vida (HP): 15%
+        Ataque: 20%
+        Magia: 30%
+        Defesa Física: 15%
+        Defesa Mágica: 20%
+        Velocidade: 20%
+        Os vampiros são conhecidos por suas habilidades mágicas, agilidade e imortalidade relativa.
+
+        Mordida Sanguinária: O vampiro se aproxima do oponente e desfere uma mordida, 
+        causando dano mágico e absorvendo uma pequena quantidade de vida do alvo para si próprio, 
+        ajudando na sua própria regeneração.
+
+MECÂNICA DE COMBATE:
+    * A ordem de ataque será determinada através unicamente da ordem de velocidade dos personagens
+    * O Calculo para o Dano causado por um ataque segue a seguinte equação
+
+        DANO = Dano_Ataque - ((Defesa/Defesa+100) * Dano_Ataque)
+
+AVALIAÇÃO DE INIMIGOS:
+    Aspectos para se levar em consideração
+    * Dano médio sofrido por turno (% em relação a vida)
+    * Dano médio causado por turno (% em relação a vida)
+    * Velocidade do Inimigo
+    * Vida máxima
+
+    FORCA = (w1 * DANO_SOFRIDO + w2 * DANO_CAUSADO + w3 * VELOCIDADE +  w4 * VIDA)/(400 *  (w1 + w2 + w3 + w4))
+
+    * Nessas condições a força sempre estará entre 0 e 100.
+
+    FAIXAS DE DIFICULDADE:
+        0 a 20:     Inimigos dispensáveis
+        20 a 40:    Inimigos fáceis
+        40 a 60:    Inimigos intermediários
+        60 a 80:    Inimigos Dificeis
+        80 a 100:   Inimigos extremamente fortes
+
+

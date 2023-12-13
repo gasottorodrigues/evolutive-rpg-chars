@@ -1,0 +1,100 @@
+SIMULATION_PARAMS={
+    "population_size":100,
+    "max_generations":100,
+    "breeders":50,
+    "player_base_points":100,
+    "player_base_race":'elf',
+    "attrs":{
+        "hp":0,
+        "atk":0,
+        "magic":0,
+        "armor":0,
+        "magic_def":0,
+        "agility":0,
+    },
+    "eval_coefs":{
+        "avg_dmg_caused":0.7,
+        "avg_dmg_suffered":0.8,
+        "max_hp":0.6,
+        "agility":0.55,
+        "attr_balance":10
+    },
+    "mutation":{
+        "mutation_aggr":5,
+        "mutation_per_ind":3
+    }
+}
+
+RACES={
+    'human':{
+        "genes":{
+            "hp":21,
+            "atk":20,
+            "magic":12,
+            "armor":18,
+            "magic_def":13,
+            "agility":17
+        },
+        "attack":{
+            "name":"Simple Atack",
+            "nature":"physical"
+        }
+    },
+    'elf':{
+        "genes":{
+        "hp":15,
+        "atk":5,
+        "magic":25,
+        "armor":15,
+        "magic_def":15,
+        "agility":25
+        },
+        "attack":{
+            "name":"Dark Arrow",
+            "nature":"magic"
+        }
+        
+    },
+    'dwarf':{
+        "genes":{
+            "hp":30,
+            "atk":20,
+            "magic":3,
+            "armor":20,
+            "magic_def":17,
+            "agility":10
+        },
+        "attack":{
+            "name":"Forge Hammer",
+            "nature":"magical"
+        }
+    },
+    'orc':{
+        "genes":{
+            "hp":30,
+            "atk":25,
+            "magic":2,
+            "armor":25,
+            "magic_def":13,
+            "agility":5
+        },
+        "attack":{
+            "name":"Brutal Assault",
+            "nature":"physical"
+        }
+    },
+    'vamp':{
+        "genes":{
+            "hp":10,
+            "atk":10,
+            "magic":30,
+            "armor":10,
+            "magic_def":15,
+            "agility":25
+        },
+         "attack":{
+            "name":"Bloody Bite",
+            "nature":"magical"
+        }
+    }
+}
