@@ -1,9 +1,9 @@
 SIMULATION_PARAMS={
     "population_size":100,
-    "max_generations":100,
-    "breeders":50,
+    "max_generations":10,
+    "breeders":20,
     "player_base_points":100,
-    "player_base_race":'elf',
+    "player_base_race":'human',
     "attrs":{
         "hp":0,
         "atk":0,
@@ -13,15 +13,14 @@ SIMULATION_PARAMS={
         "agility":0,
     },
     "eval_coefs":{
-        "avg_dmg_caused":0.7,
-        "avg_dmg_suffered":0.8,
-        "max_hp":0.6,
-        "agility":0.55,
-        "attr_balance":10
+        "hp":0.3,
+        "dmg":0.5,
+        "def":0.6,
+        "agility":0.7,
     },
     "mutation":{
-        "mutation_aggr":5,
-        "mutation_per_ind":3
+        "mutation_aggr":2,
+        "mutation_per_ind":6
     }
 }
 
@@ -57,12 +56,12 @@ RACES={
     },
     'dwarf':{
         "genes":{
-            "hp":30,
+            "hp":25,
             "atk":20,
             "magic":3,
             "armor":20,
             "magic_def":17,
-            "agility":10
+            "agility":15
         },
         "attack":{
             "name":"Forge Hammer",
@@ -71,12 +70,12 @@ RACES={
     },
     'orc':{
         "genes":{
-            "hp":30,
-            "atk":25,
-            "magic":2,
-            "armor":25,
-            "magic_def":13,
-            "agility":5
+            "hp":25,
+            "atk":17,
+            "magic":10,
+            "armor":20,
+            "magic_def":17,
+            "agility":10
         },
         "attack":{
             "name":"Brutal Assault",
@@ -87,8 +86,8 @@ RACES={
         "genes":{
             "hp":10,
             "atk":10,
-            "magic":30,
-            "armor":10,
+            "magic":25,
+            "armor":15,
             "magic_def":15,
             "agility":25
         },

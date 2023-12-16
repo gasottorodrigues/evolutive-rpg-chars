@@ -35,27 +35,26 @@ class CharacterManipulator:
     @staticmethod
     def reproduce(mother,father,points):
         race = random.choice([mother.race,father.race])
-        hp = int((mother.hp+father.hp)/2)
-        atk = int((mother.atk+father.atk)/2)
-        magic = int((mother.magic+father.magic)/2)
-        armor = int((mother.armor+father.armor)/2)
-        magic_def = int((mother.magic_def+father.magic_def)/2)
-        agility = int((mother.agility+father.agility)/2)
+        attrs = SIMULATION_PARAMS['attrs'].copy()
+        attrs['hp'] = int((mother.hp+father.hp)/2)
+        attrs['atk'] = int((mother.atk+father.atk)/2)
+        attrs['magic'] = int((mother.magic+father.magic)/2)
+        attrs['armor'] = int((mother.armor+father.armor)/2)
+        attrs['magic_def'] = int((mother.magic_def+father.magic_def)/2)
+        attrs['agility'] = int((mother.agility+father.agility)/2)
 
-        son = Character(race,hp,atk,magic,armor,magic_def,agility)
-        extra_points = points - son.get_total_points() 
+        extra_points = max(points - sum(list(attrs.values())),0)
 
-        genetics = RACES[son.race]['genes']
-        attrs = son.attrs()
+        if(extra_points > 0):
+            genetics = RACES[race]['genes']
+            keys = list(genetics.keys())
+            prob = list(genetics.values())
+            points_dist = random.choices(keys,weights=prob,k=extra_points)
 
-        keys = list(genetics.keys())
-        prob = list(genetics.values())
-        points_dist = random.choices(keys,weights=prob,k=extra_points)
+            for p in points_dist:
+                attrs[p] += 1
 
-        for p in points_dist:
-            attrs[p] += 1
-
-        son.set_attrs(attrs)
+        son = Character(race,attrs['hp'],attrs['atk'],attrs['magic'],attrs['armor'],attrs['magic_def'],attrs['agility'])
         return son
     
     @staticmethod
@@ -65,23 +64,15 @@ class CharacterManipulator:
         attrs = ind.attrs()
         attrs_list = list(attrs.keys())
 
-        for i in range(0,mutations):
-            receiver = random.choices(attrs_list,weights=list(map(lambda x: 100/(1+attrs[x]),attrs_list)),k=1)[0]
-            donor = random.choices(attrs_list,weights=list(map(lambda x: attrs[x],attrs_list)),k=1)[0]
+        while(mutations > 0):
+            receiver = random.choice(attrs_list)
+            donor = random.choice(attrs_list)
 
-            if (attrs[donor] - agressiveness >= 1):
-                attrs[donor] -= agressiveness
-                attrs[receiver] += agressiveness
-            else:
-                attrs[receiver] += attrs[donor]
-                attrs[donor] = 1
+            if(attrs[donor] > agressiveness+1) and (attrs[receiver] + agressiveness <= 100):
+                attrs[donor] = attrs[donor] - agressiveness
+                attrs[receiver] = attrs[receiver] + agressiveness
+                mutations -= 1
 
         ind.set_attrs(attrs)
         return ind
-
-    @staticmethod
-    def balance(ind):
-        attr_dist = list(ind.attrs().values())
-
-        return 1/(max(attr_dist) - min(attr_dist))
         

@@ -41,6 +41,22 @@ def plot(evaluation,player):
     plt.legend()
     plt.tight_layout()
     plt.show()
+def plot_gen(ind_list):
+    eixo_x = list(range(len(ind_list)))  # Números de 0 a 100 com um intervalo de 5
+
+
+    # Plotando os pontos
+    plt.figure(figsize=(8, 6))
+    plt.scatter(eixo_x, ind_list, color='blue')  # Pode personalizar cor, tamanho do ponto, etc.
+
+    # Configurações do gráfico
+    plt.title('Avaliação da Geração')
+    plt.xlabel('Individuo')
+    plt.ylabel('Resultado')
+
+    plt.grid(True)  # Adiciona grade ao gráfico
+
+    plt.show()
 
 if __name__ == "__main__":
     logging.basicConfig(format='[%(name)s - %(levelname)s]: %(message)s', level=logging.INFO)
@@ -81,10 +97,11 @@ if __name__ == "__main__":
             "avg":pop_ctrl.get_avg_eval(),
             "breeders":pop_ctrl.population[-3:-1]
             })
-        print()
-        
+        # plot_gen(pop_ctrl.get_eval_list())
+        print(pop_ctrl.get_races_count())
         pop_ctrl.new_generation(num_breeders)
-    
+
+    print(pop_ctrl.get_races_count())
     plot(evaluation,player)
         
 
