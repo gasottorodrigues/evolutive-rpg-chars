@@ -33,17 +33,17 @@ class PopulationController:
 
             genes = RACES[ind.race]['genes']
             k = SIMULATION_PARAMS['eval_coefs']
-            hp_diff = abs(player.hp - ind.hp)
+            hp_diff = abs(1 - ind.hp/player.hp)
             avg_dmg_caused = CharacterManipulator.simulate_attack(ind,player)
             avg_dmg_suffered = CharacterManipulator.simulate_attack(player,ind)
-            agility_diff = abs(player.agility - ind.agility)
+            agility_diff = abs(1 - ind.agility/player.agility)
 
-            hp_param = (hp_diff*genes['hp'])/(ind.hp/player.hp)
-            dmg_param = avg_dmg_caused*(genes['atk']+genes['magic'])
-            def_param = (100-avg_dmg_suffered)*(genes['armor'] + genes['magic_def'])
-            agility_param = (agility_diff*genes['agility'])/(ind.agility/player.agility)
+            hp_param = (hp_diff)
+            dmg_param = (1 - avg_dmg_caused/(player.hp))
+            def_param = (avg_dmg_suffered/ind.hp)
+            agility_param = (agility_diff)
 
-            ind.eval = ((hp_param*k['hp'])+(dmg_param*k['dmg'])+(def_param*k['def'])+(agility_param*k['agility']))/100.0
+            ind.eval = ((hp_param*k['hp'])+(dmg_param*k['dmg'])+(def_param*k['def'])+(agility_param*k['agility']))
             self.population[idx].eval = ind.eval
             self.logger.debug(f'Evaluating character {idx + 1} - Race:{ind.race}, Eval: {ind.eval}')
         

@@ -13,10 +13,10 @@ SIMULATION_PARAMS={
         "agility":0,
     },
     "eval_coefs":{
-        "hp":0.3,
-        "dmg":0.5,
-        "def":0.6,
-        "agility":0.7,
+        "hp":1,
+        "dmg":1,
+        "def":1,
+        "agility":1,
     },
     "mutation":{
         "mutation_aggr":2,
