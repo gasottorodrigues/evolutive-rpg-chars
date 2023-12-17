@@ -9,9 +9,17 @@ class CharacterManipulator:
         genetics = RACES[race]['genes']
         attrs = SIMULATION_PARAMS['attrs'].copy()
 
+        attrs['hp'] = 1
+        attrs['atk'] = 1
+        attrs['armor'] = 1
+        attrs['magic'] = 1
+        attrs['magic_def'] = 1
+        attrs['agility'] = 1
+
+
         keys = list(genetics.keys())
         prob = list(genetics.values())
-        points_dist = random.choices(keys,weights=prob,k=points)
+        points_dist = random.choices(keys,weights=prob,k=(points-6))
 
         for p in points_dist:
             attrs[p] += 1
@@ -68,7 +76,7 @@ class CharacterManipulator:
             receiver = random.choice(attrs_list)
             donor = random.choice(attrs_list)
 
-            if(attrs[donor] > agressiveness+1) and (attrs[receiver] + agressiveness <= 100):
+            if(attrs[donor] >= agressiveness+1) and (attrs[receiver] + agressiveness <= 100):
                 attrs[donor] = attrs[donor] - agressiveness
                 attrs[receiver] = attrs[receiver] + agressiveness
                 mutations -= 1

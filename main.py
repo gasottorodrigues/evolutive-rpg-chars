@@ -2,7 +2,11 @@ import logging
 from src.config import *
 from src.controller.CharacterManipulator import CharacterManipulator
 from src.controller.PopulationController import PopulationController
+from src.controller.UserController import UserController
 import matplotlib.pyplot as plt
+
+import random
+import json 
 
 def plot(evaluation,player):
     # Listas de dados
@@ -63,43 +67,73 @@ if __name__ == "__main__":
 
     pop_size = SIMULATION_PARAMS['population_size']
     max_gen = SIMULATION_PARAMS['max_generations']
-    player_points = SIMULATION_PARAMS['player_base_points']
-    player_race = SIMULATION_PARAMS['player_base_race']
     num_breeders = SIMULATION_PARAMS['breeders']
+    limiter = SIMULATION_PARAMS['limiter']
+
+    user_ctrl = UserController()
+    user_ctrl.create()
+    player = user_ctrl.get_player()
+    player.log()
+
+    
 
     logging.info(f'Start Evolutional Char Generation.')
     logging.info(f'Population Size: {pop_size}')
     logging.info(f'Max Generations: {max_gen}\n')
 
+    # logging.info(f'Player Inital Points: {player_points}\n')
+    # logging.info(f'Player Race: {player_race}\n')
+    # logging.info(f'Generating Player...')
 
-
-    logging.info(f'Player Inital Points: {player_points}\n')
-    logging.info(f'Player Race: {player_race}\n')
-    logging.info(f'Generating Player...')
-
-    player = CharacterManipulator.generateChar(player_race,player_points)
-    player.log()
+    # player = CharacterManipulator.generateChar(player_race,player_points)
+    # player.log()
 
     logging.info(f'Generating First Population...')
-    pop_ctrl = PopulationController(pop_size,player_points)
-    pop_ctrl.generate_population()
+    
 
     evaluation = []
+    curr_avg = 10
+    output_arr = []
+    for idx,n_mobs in enumerate(OUTPUT_INFOS):
+        target = SIMULATION_PARAMS['target_arr'][idx]
+        pop_ctrl = PopulationController(n_mobs*50,int(player.get_total_points()*(1-(0.1*target))))
+        num_breeders = n_mobs*10
+        pop_ctrl.reset()
+        gen_id = 1
+        while (curr_avg >= limiter) &  (gen_id <= max_gen):
+            logging.info(f'Generation {gen_id}:')
 
-    for i in range(1,max_gen+1):
-        logging.info(f'Generation {i}:')
+            logging.info(f'Evaluating Population...')
+            pop_ctrl.evaluate_population(player,target)
+            logging.info(f'Max evaluation: {pop_ctrl.get_max_eval()}') 
+            logging.info(f'AVG: {pop_ctrl.get_avg_eval()}') 
+            curr_avg = pop_ctrl.get_avg_eval()
+            evaluation.append({
+                "max":pop_ctrl.get_max_eval(),
+                "avg":pop_ctrl.get_avg_eval(),
+                "breeders":pop_ctrl.population[-3:-1]
+                })
+            # plot_gen(pop_ctrl.get_eval_list())
+            print(pop_ctrl.get_races_count())
+            if curr_avg >= limiter:
+                pop_ctrl.new_generation(num_breeders)
+                gen_id+=1
 
-        logging.info(f'Evaluating Population...')
-        pop_ctrl.evaluate_population(player)
-        logging.info(f'Max evaluation: {pop_ctrl.get_max_eval()}')
-        evaluation.append({
-            "max":pop_ctrl.get_max_eval(),
-            "avg":pop_ctrl.get_avg_eval(),
-            "breeders":pop_ctrl.population[-3:-1]
-            })
-        # plot_gen(pop_ctrl.get_eval_list())
-        print(pop_ctrl.get_races_count())
-        pop_ctrl.new_generation(num_breeders)
+            if(gen_id == max_gen) & (curr_avg > limiter):
+                logging.info(f'Bad Generations. Reseting')
+                pop_ctrl.reset()
+                gen_id=1
+
+        output_arr.append(random.choices(pop_ctrl.population,k=n_mobs))
+    
+    output_dict = {
+        "easy_mobs": [ind.json() for ind in output_arr[0]],
+        "medium_mobs":[ind.json() for ind in output_arr[1]],
+        "hard_mobs":[ind.json() for ind in output_arr[2]],
+    }
+
+    with open('output.json','w') as outfile:
+        json.dump(output_dict,outfile)
 
     print(pop_ctrl.get_races_count())
     plot(evaluation,player)
