@@ -26,29 +26,27 @@ class PopulationController:
         self.logger.info(f'Population Size: {len(self.population)}.')
         return
     
-    def evaluate_population(self, player):
+    def evaluate_population(self, player,target):
         for idx,ind in enumerate(self.population):
             if(ind.eval != -1):
                 continue
 
             genes = RACES[ind.race]['genes']
             k = SIMULATION_PARAMS['eval_coefs']
-            hp_diff = abs(1 - ind.hp/player.hp)
             avg_dmg_caused = CharacterManipulator.simulate_attack(ind,player)
             avg_dmg_suffered = CharacterManipulator.simulate_attack(player,ind)
-            agility_diff = abs(1 - ind.agility/player.agility)
 
-            hp_param = (hp_diff)
+            hp_param = 1 - ind.hp/player.hp
             dmg_param = (1 - avg_dmg_caused/(player.hp))
-            def_param = (avg_dmg_suffered/ind.hp)
-            agility_param = (agility_diff)
+            def_param = (avg_dmg_suffered/ind.hp - 1)
+            agility_param = 1 - ind.agility/player.agility
 
-            ind.eval = ((hp_param*k['hp'])+(dmg_param*k['dmg'])+(def_param*k['def'])+(agility_param*k['agility']))
+            ind.eval = abs((hp_param*k['hp'])+(dmg_param*k['dmg'])+(def_param*k['def'])+(agility_param*k['agility']) - target)
             self.population[idx].eval = ind.eval
             self.logger.debug(f'Evaluating character {idx + 1} - Race:{ind.race}, Eval: {ind.eval}')
         
         self.logger.info(f'Ordenating evaluation')
-        self.population = sorted(self.population, key=lambda ind: ind.eval)
+        self.population = sorted(self.population, key=lambda ind: -ind.eval)
 
         for ind in self.population:
              self.logger.debug(f'character - Race:{ind.race}, Eval: {ind.eval}')
@@ -92,5 +90,9 @@ class PopulationController:
             acc += ind.eval
 
         return acc/len(self.population)
+    
+    def reset(self):
+        self.population = []
+        self.generate_population()
     
     

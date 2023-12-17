@@ -1,9 +1,11 @@
 SIMULATION_PARAMS={
-    "population_size":100,
-    "max_generations":10,
-    "breeders":20,
+    "population_size":500,
+    "max_generations":100,
+    "breeders":100,
+    "target_arr": [2,0,-2],
+    "limiter":0.5,
     "player_base_points":100,
-    "player_base_race":'human',
+    "player_base_race":'elf',
     "attrs":{
         "hp":0,
         "atk":0,
@@ -14,16 +16,17 @@ SIMULATION_PARAMS={
     },
     "eval_coefs":{
         "hp":1,
-        "dmg":1,
-        "def":1,
-        "agility":1,
+        "dmg":0.8,
+        "def":0.9,
+        "agility":0.9,
     },
     "mutation":{
-        "mutation_aggr":2,
-        "mutation_per_ind":6
+        "mutation_aggr":1,
+        "mutation_per_ind":5
     }
 }
 
+OUTPUT_INFOS=[3,5,2]
 RACES={
     'human':{
         "genes":{
@@ -84,8 +87,8 @@ RACES={
     },
     'vamp':{
         "genes":{
-            "hp":10,
-            "atk":10,
+            "hp":19,
+            "atk":1,
             "magic":25,
             "armor":15,
             "magic_def":15,

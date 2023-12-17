@@ -30,6 +30,17 @@ class Character:
             "agility":self.agility,
          }
     
+    def json(self):
+         return {
+            "race":self.race,
+            "hp":self.hp,
+            "atk":self.atk,
+            "magic":self.magic,
+            "armor":self.armor,
+            "magic_def":self.magic_def,
+            "agility":self.agility,
+         }
+    
     def set_attrs(self,attrs:dict):
          self.hp = attrs['hp']
          self.atk= attrs['atk']
