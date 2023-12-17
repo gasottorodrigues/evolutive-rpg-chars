@@ -22,7 +22,7 @@ def plot(evaluation,player):
     plt.figure(figsize=(10, 6))
 
     attrs = player.attrs()
-    plt.text(len(evaluation) -1, min(avg_values), f'Player ( {player.race} ) \n HP: {attrs['hp']} | ATK: {attrs['atk']}\n MGC: {attrs['magic']} | ARM: {attrs['armor']}\n MR: {attrs['magic_def']} | SPD: {attrs['agility']}\n', fontsize=10, ha='center', va='bottom')
+    plt.text(len(evaluation) -1, min(avg_values), f"Player ( {player.race} ) \n HP: {attrs['hp']} | ATK: {attrs['atk']}\n MGC: {attrs['magic']} | ARM: {attrs['armor']}\n MR: {attrs['magic_def']} | SPD: {attrs['agility']}\n", fontsize=10, ha='center', va='bottom')
 
     # Plotagem dos dados
     plt.plot(range(len(evaluation)), max_values, label='Melhor de Todos')
@@ -34,7 +34,7 @@ def plot(evaluation,player):
     plt.title('Resultados por Gerações')
 
     for i, attrs in enumerate(breeders_attributes):
-        plt.text(i, max_values[i], f'{attrs['race']}\n HP: {attrs['hp']} | ATK: {attrs['atk']}\n MGC: {attrs['magic']} | ARM: {attrs['armor']}\n MGC_DEF: {attrs['magic_def']} | SPD: {attrs['agility']}\n', fontsize=8, ha='center', va='bottom')
+        plt.text(i, max_values[i], f"{attrs['race']}\n HP: {attrs['hp']} | ATK: {attrs['atk']}\n MGC: {attrs['magic']} | ARM: {attrs['armor']}\n MGC_DEF: {attrs['magic_def']} | SPD: {attrs['agility']}\n", fontsize=8, ha='center', va='bottom')
 
     
     # Configurando a legenda e exibindo o gráfico
