@@ -1,0 +1,24 @@
+{
+    "party":[
+        {
+            "nick":"Roberte",
+            "race":"elf",
+            "hp":10,
+            "atk":10,
+            "magic":10,
+            "armor":10,
+            "magic_def":10,
+            "agility":10
+        },
+        {
+            "nick":"ManuelaGomas",
+            "race":"elf",
+            "hp":10,
+            "atk":10,
+            "magic":10,
+            "armor":10,
+            "magic_def":10,
+            "agility":10
+        }
+    ]
+}
