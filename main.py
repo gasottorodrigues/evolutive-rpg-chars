@@ -91,16 +91,34 @@ if __name__ == "__main__":
     logging.info(f'Generating First Population...')
     
 
+# Evaluating and generating populations according to preset difficulty
+#
+# Three groups are generated: an easy, a medium, and a hard ones, from which are selected the individuals
+
     evaluation = []
     curr_avg = 10
     output_arr = []
+
+    # Runs a 3-time loop for each difficulty
     for idx,n_mobs in enumerate(OUTPUT_INFOS):
+
+        # Target parameter is chose por each difficulty
         target = SIMULATION_PARAMS['target_arr'][idx]
+
+        # Number of points for each enemy is chosen based on the difficulty
+        # Individuals per popullation is based on the number of mobs to be generated
         pop_ctrl = PopulationController(n_mobs*50,int(player.get_total_points()*(1-(0.1*target))))
+
+        # Number of breeders is based in the number of mobs to be generated
         num_breeders = n_mobs*10
+
         pop_ctrl.reset()
         gen_id = 1
-        while (curr_avg >= limiter) &  (gen_id <= max_gen):
+
+        # Generates populations until the average is close to the desired value
+
+        # Here is where the evolution occurs
+        while (curr_avg >= limiter) &  (gen_id <= max_gen):             # abs(avg - target value) < limiter break condition
             logging.info(f'Generation {gen_id}:')
 
             logging.info(f'Evaluating Population...')
