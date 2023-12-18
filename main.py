@@ -65,6 +65,7 @@ def plot_gen(ind_list):
 if __name__ == "__main__":
     logging.basicConfig(format='[%(name)s - %(levelname)s]: %(message)s', level=logging.INFO)
 
+    # Sets up the simulation parameters based on config.py parameters
     pop_size = SIMULATION_PARAMS['population_size']
     max_gen = SIMULATION_PARAMS['max_generations']
     num_breeders = SIMULATION_PARAMS['breeders']
@@ -116,15 +117,21 @@ if __name__ == "__main__":
         gen_id = 1
 
         # Generates populations until the average is close to the desired value
+        #
 
         # Here is where the evolution occurs
         while (curr_avg >= limiter) &  (gen_id <= max_gen):             # abs(avg - target value) < limiter break condition
             logging.info(f'Generation {gen_id}:')
 
             logging.info(f'Evaluating Population...')
+
+            # Here is where the population is evaluated, the breeders are chosen and the reproduction occurs
             pop_ctrl.evaluate_population(player,target)
+
             logging.info(f'Max evaluation: {pop_ctrl.get_max_eval()}') 
-            logging.info(f'AVG: {pop_ctrl.get_avg_eval()}') 
+            logging.info(f'AVG: {pop_ctrl.get_avg_eval()}')
+
+            # Gets the average evaluation of the generation
             curr_avg = pop_ctrl.get_avg_eval()
             evaluation.append({
                 "max":pop_ctrl.get_max_eval(),
@@ -136,14 +143,18 @@ if __name__ == "__main__":
             if curr_avg >= limiter:
                 pop_ctrl.new_generation(num_breeders)
                 gen_id+=1
-
+            
+            # Checks if generation convergency is impossible and resets the evolution process
             if(gen_id == max_gen) & (curr_avg > limiter):
                 logging.info(f'Bad Generations. Reseting')
                 pop_ctrl.reset()
                 gen_id=1
 
+        # Adds the mobs generated for this difficulty, chosen by random
         output_arr.append(random.choices(pop_ctrl.population,k=n_mobs))
     
+    # Output dictionary to be converted into a json and read by the graphical engine
+    # Mobs separeted by room
     output_dict = {
         "easy_mobs": [ind.json() for ind in output_arr[0]],
         "medium_mobs":[ind.json() for ind in output_arr[1]],
