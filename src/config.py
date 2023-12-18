@@ -1,3 +1,5 @@
+# Parameters for the simulation
+
 SIMULATION_PARAMS={
     "population_size":500,
     "max_generations":100,
@@ -26,7 +28,10 @@ SIMULATION_PARAMS={
     }
 }
 
+
 OUTPUT_INFOS=[3,5,2]
+
+# Genes of each race
 RACES={
     'human':{
         "genes":{

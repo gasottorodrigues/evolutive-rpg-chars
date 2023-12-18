@@ -2,6 +2,10 @@ import logging
 from src.config import *
 from src.models.Attack import Attack
 
+# Character class
+# A caracter has health points, physical attack damage, magical attack damage, armor, magical defense, agility
+# It also has a race, which defines its type of attack damage
+
 class Character:
     def __init__(self,race:str,base_hp:int,base_atk:int,base_magic:int,base_armor:int,base_mg_def:int,base_spd:int):
             self.race = race.lower()

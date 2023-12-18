@@ -65,6 +65,7 @@ def plot_gen(ind_list):
 if __name__ == "__main__":
     logging.basicConfig(format='[%(name)s - %(levelname)s]: %(message)s', level=logging.INFO)
 
+    # Sets up the simulation parameters based on config.py parameters
     pop_size = SIMULATION_PARAMS['population_size']
     max_gen = SIMULATION_PARAMS['max_generations']
     num_breeders = SIMULATION_PARAMS['breeders']
@@ -91,22 +92,46 @@ if __name__ == "__main__":
     logging.info(f'Generating First Population...')
     
 
+# Evaluating and generating populations according to preset difficulty
+#
+# Three groups are generated: an easy, a medium, and a hard ones, from which are selected the individuals
+
     evaluation = []
     curr_avg = 10
     output_arr = []
+
+    # Runs a 3-time loop for each difficulty
     for idx,n_mobs in enumerate(OUTPUT_INFOS):
+
+        # Target parameter is chose por each difficulty
         target = SIMULATION_PARAMS['target_arr'][idx]
+
+        # Number of points for each enemy is chosen based on the difficulty
+        # Individuals per popullation is based on the number of mobs to be generated
         pop_ctrl = PopulationController(n_mobs*50,int(player.get_total_points()*(1-(0.1*target))))
+
+        # Number of breeders is based in the number of mobs to be generated
         num_breeders = n_mobs*10
+
         pop_ctrl.reset()
         gen_id = 1
-        while (curr_avg >= limiter) &  (gen_id <= max_gen):
+
+        # Generates populations until the average is close to the desired value
+        #
+
+        # Here is where the evolution occurs
+        while (curr_avg >= limiter) &  (gen_id <= max_gen):             # abs(avg - target value) < limiter break condition
             logging.info(f'Generation {gen_id}:')
 
             logging.info(f'Evaluating Population...')
+
+            # Here is where the population is evaluated, the breeders are chosen and the reproduction occurs
             pop_ctrl.evaluate_population(player,target)
+
             logging.info(f'Max evaluation: {pop_ctrl.get_max_eval()}') 
-            logging.info(f'AVG: {pop_ctrl.get_avg_eval()}') 
+            logging.info(f'AVG: {pop_ctrl.get_avg_eval()}')
+
+            # Gets the average evaluation of the generation
             curr_avg = pop_ctrl.get_avg_eval()
             evaluation.append({
                 "max":pop_ctrl.get_max_eval(),
@@ -118,14 +143,18 @@ if __name__ == "__main__":
             if curr_avg >= limiter:
                 pop_ctrl.new_generation(num_breeders)
                 gen_id+=1
-
+            
+            # Checks if generation convergency is impossible and resets the evolution process
             if(gen_id == max_gen) & (curr_avg > limiter):
                 logging.info(f'Bad Generations. Reseting')
                 pop_ctrl.reset()
                 gen_id=1
 
+        # Adds the mobs generated for this difficulty, chosen by random
         output_arr.append(random.choices(pop_ctrl.population,k=n_mobs))
     
+    # Output dictionary to be converted into a json and read by the graphical engine
+    # Mobs separeted by room
     output_dict = {
         "easy_mobs": [ind.json() for ind in output_arr[0]],
         "medium_mobs":[ind.json() for ind in output_arr[1]],
