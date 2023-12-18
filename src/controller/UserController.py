@@ -30,6 +30,21 @@ class UserController:
         player = Character(self.race,self.hp,self.atk,self.magic,self.armor,self.magic_def,self.agility)
         return player
 
+    def aux_input(self):
+        while True:
+            aux = input()
+            if aux.isdigit():
+                aux = int(aux)
+                if aux == 0:
+                    self.styled_print("{}, O valor precisa ser mairo que ZERO".format(self.nick))
+                    continue
+                else:
+                    return aux
+
+            else:
+                self.styled_print("{}, Digite um numero valido".format(self.nick))
+                continue
+
     def create(self):
         flag = 0
 
@@ -59,12 +74,12 @@ class UserController:
 
         #PEGANDO STATS DO USUARIO
         self.styled_print("Digite a quantidade de HP que seu heroi tera")
-        self.hp = int(input())
+        self.hp = self.aux_input()
 
         self.styled_print("Agora digite o valor do Dano do seu heroi")
-        self.atk = int(input())
+        self.atk = self.aux_input()
 
-        if int(self.atk) > 50:
+        if int(self.atk) > 30:
             print("Vem Tranquilo {} Vem tranquilo".format(self.nick))
             print()
 
@@ -73,15 +88,17 @@ class UserController:
             print()
 
         self.styled_print("Digite agora a quantidade de Armadura que seu heroi tera")
-        self.armor = int(input())
+        self.armor = self.aux_input()
 
         self.styled_print("Digite a quantidade de mana para seu heroi")
-        self.magic = int(input())
+        self.magic = self.aux_input()
 
         self.styled_print("Agora digite o valor da defesa magica do seu heroi")
-        self.magic_def = int(input())
+        self.magic_def = self.aux_input()
 
         self.styled_print(" {}, qual o valor de agilidade quer para seu heroi".format(self.nick))
-        self.agility = int(input())
+        self.agility = self.aux_input()
 
-        self.styled_print("Seu heroi parece bom {} \n Sera que ele esta pronto para essa jornada?".format(self.nick))
+        self.styled_print("Seu heroi parece bom {} \n\r Sera que ele esta pronto para essa jornada?".format(self.nick))
+
+
