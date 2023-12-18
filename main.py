@@ -2,8 +2,9 @@ import logging
 from src.config import *
 from src.controller.CharacterManipulator import CharacterManipulator
 from src.controller.PopulationController import PopulationController
-from src.controller.UserController import UserController
+from src.controller.InputOutputController import InputOutputController
 import matplotlib.pyplot as plt
+
 
 import random
 import json 
@@ -71,12 +72,9 @@ if __name__ == "__main__":
     num_breeders = SIMULATION_PARAMS['breeders']
     limiter = SIMULATION_PARAMS['limiter']
 
-    user_ctrl = UserController()
-    user_ctrl.create()
-    player = user_ctrl.get_player()
-    player.log()
+    inout_ctrl = InputOutputController()
 
-    
+    player, total_mobs, rooms_data, n_players = inout_ctrl.get_input(SIMULATION_PARAMS["player_file"],SIMULATION_PARAMS["rooms_file"])
 
     logging.info(f'Start Evolutional Char Generation.')
     logging.info(f'Population Size: {pop_size}')
@@ -98,10 +96,10 @@ if __name__ == "__main__":
 
     evaluation = []
     curr_avg = 10
-    output_arr = []
+    mobs_arr = []
 
     # Runs a 3-time loop for each difficulty
-    for idx,n_mobs in enumerate(OUTPUT_INFOS):
+    for idx,n_mobs in enumerate(total_mobs):
 
         # Target parameter is chose por each difficulty
         target = SIMULATION_PARAMS['target_arr'][idx]
@@ -151,17 +149,13 @@ if __name__ == "__main__":
                 gen_id=1
 
         # Adds the mobs generated for this difficulty, chosen by random
-        output_arr.append(random.choices(pop_ctrl.population,k=n_mobs))
+        mobs_arr.append(random.choices(pop_ctrl.population,k=n_mobs))
     
     # Output dictionary to be converted into a json and read by the graphical engine
     # Mobs separeted by room
-    output_dict = {
-        "easy_mobs": [ind.json() for ind in output_arr[0]],
-        "medium_mobs":[ind.json() for ind in output_arr[1]],
-        "hard_mobs":[ind.json() for ind in output_arr[2]],
-    }
+    output_dict = inout_ctrl.generate_output(rooms_data,mobs_arr,n_players)
 
-    with open('output.json','w') as outfile:
+    with open(SIMULATION_PARAMS['output_file'],'w') as outfile:
         json.dump(output_dict,outfile)
 
     print(pop_ctrl.get_races_count())

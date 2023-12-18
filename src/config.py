@@ -6,6 +6,9 @@ SIMULATION_PARAMS={
     "breeders":100,
     "target_arr": [2,0,-2],
     "limiter":0.5,
+    "player_file":"./src/dados_configuracao_party.json",
+    "rooms_file":"./src/dados_configuracao_grid.json",
+    "output_file":"dados_mobs.json",
     "player_base_points":100,
     "player_base_race":'elf',
     "attrs":{
@@ -27,9 +30,6 @@ SIMULATION_PARAMS={
         "mutation_per_ind":5
     }
 }
-
-
-OUTPUT_INFOS=[3,5,2]
 
 # Genes of each race
 RACES={
